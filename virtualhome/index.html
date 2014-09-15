@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    <title>Virtual home</title>
+    <style>
+        body 		{ padding-top:80px; }
+    </style>
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    
+    <script type="text/javascript">
+    	  var host="localhost";
+    	  var port="8080";
+    	  
+    	  var restApisUrl="http://"+host+":"+port+"/api/";
+    	  
+    	  var webSocketUrl = "ws://"+host+":"+port+"/ws";
+
+    	  
+    	  var websocket;
+    	  
+    	  $(document).ready(function(){
+    		//reset events textarea
+  		    //output = document.getElementById("eventsTextArea");
+  		    $("#eventsTextArea").val('');
+  		    
+  		    //initialize websocket
+  		    initWebSocket();
+  		    displayDevices();
+  		    console.log("all loaded");  
+    	  });
+		  
+		  
+		  function displayDevices()
+		  {
+		  	$.getJSON(
+		  			restApisUrl+"devices",
+		  			function(data)
+				  	{
+				  		$("#functions").hide();
+				  		updateDevicesTable(data);
+				  		$("#devices").show();
+				  		updateStatus(1,"ok");
+				  	}
+		  	).error(function()
+		  		{
+		  			updateStatus(-1,"Error getting devices list");
+		  		}
+		  	);
+		  }
+		  
+		  function displayFunctions(deviceUID)
+		  {
+		  	$.getJSON(
+		  			restApisUrl+"devices/"+deviceUID+"/functions",
+		  			function(data)
+				  	{
+				  		$("#devices").hide();
+				  		updateFunctionsTable(data);
+				  		$("#functions").show();
+				  		updateStatus(1,"ok");
+				  	}
+		  			
+		  	).error(function()
+		  		{
+		  			updateStatus(-1,"Error getting devices list");
+		  		}
+		  	);
+		  }
+		  
+		  function invokeFunctionOperation(functionName,operation,arguments)
+		  {
+			  var data;
+			  if(arguments=="")
+			  {
+				  data={"operation":operation};
+			  }else{
+				  data={"operation":operation,"arguments":JSON.parse(arguments)};
+			  }
+			  $.ajax({
+				    type: 'POST',
+				    url: restApisUrl+"functions/"+functionName,
+				    data: JSON.stringify(data),
+				    success: function(data) { 
+				    	if(data.code==200)
+				    		updateStatus(1,'invokeResponse: ' + JSON.stringify(data));
+				    	else{
+				    		updateStatus(-1,'invokeResponse: ' + JSON.stringify(data));
+				    	}
+				    },
+				    contentType: "application/json",
+				    dataType: 'json'
+				});
+
+
+		  }
+		
+		
+		  function updateDevicesTable(data)
+		  {
+			  	var tHeader = "<tr>";
+			    
+		        tHeader += "<th>dal.device.UID</th>";
+		        tHeader += "<th>dal.device.driver</th>";
+			    
+			    tHeader += "<th></th></tr>";
+
+		        var tBody="";
+		        for(var obj in data) {
+	        		if(data.hasOwnProperty(obj)) {
+		            	tBody += "<tr>";
+	                	tBody += "<td>" + data[obj]["dal.device.UID"] +"</td>";
+	                	tBody += "<td>" + data[obj]["dal.device.driver"] +"</td>";
+	                	tBody += '<td> <a href="javascript:displayFunctions(\''+data[obj]["dal.device.UID"]+'\')">Display Functions</a></td>'; 
+	                	tBody += "</tr>";
+					}            
+				}            	
+            	$("#devicesTable").html(tHeader+tBody);
+		  }
+		  
+		  function updateFunctionsTable(data)
+		  {
+		  
+			    var tHeader = "<tr>";
+			    
+			  	tHeader += "<th>dal.function.device.UID</th>";
+		        tHeader += "<th>dal.function.UID</th>";
+		        tHeader += "<th>dal.function.operation.names</th>";
+		        tHeader += "<th>dal.function.property.names</th>";
+		        tHeader += "</tr>";
+		        
+		        var tBody="";
+		        for(var obj in data) {
+		        		if(data.hasOwnProperty(obj)) {
+		        			tBody += "<tr>";
+				            tBody += "<td>" + data[obj]["dal.function.device.UID"] +"</td>";
+			                tBody += "<td>" + data[obj]["dal.function.UID"] + "</td>";
+			                tBody += "<td>"+data[obj]["dal.function.operation.names"]+"</td>";
+			                tBody += "<td>"+data[obj]["dal.function.property.names"]+"</td>";
+			                tBody += "</tr>";
+			             }
+			    }
+			    $("#functionsTable").html(tHeader+tBody);
+		  }
+		
+		  function updateStatus(status, message) {
+				$("#APIRequestInformation").removeClass().empty();
+				if (status == 1)
+				    $("#APIRequestInformation").addClass("alert alert-success").text(message);
+				else if(status == -1)
+				    $("#APIRequestInformation").addClass("alert alert-danger").text(message);
+		   }		
+		
+		  function initWebSocket()
+		  {
+			  
+		    websocket = new WebSocket(webSocketUrl);
+		    websocket.onopen = function(evt) { onOpen(evt) };
+		    websocket.onclose = function(evt) { onClose(evt) };
+		    websocket.onmessage = function(evt) { onMessage(evt) };
+		    websocket.onerror = function(evt) { onError(evt) };
+		  }
+		
+		  function onOpen(evt)
+		  {
+		    console.log("CONNECTED");
+		    $("#Connect").hide()
+		  }
+		
+		  function onClose(evt)
+		  {
+		    console.log("DISCONNECTED");
+		    $("#Connect").show()
+		    
+		    
+		  }
+		
+		  function onMessage(evt)
+		  {
+		  	//update events text area when a message have been received from websocket
+		  	 $("#eventsTextArea").val($("#eventsTextArea").val()+evt.data);
+		  }
+		
+		  function onError(evt)
+		  {
+		  	$("#eventsTextArea").append('<span style="color: red;">ERROR:</span> ' + JSON.stringify(evt));
+		  	console.error(JSON.stringify(evt));
+		  }
+		
+		  function doSendSubscriptionString(functionUID,property)
+		  {
+		    console.log("Subscribing to: "+functionUID+" "+property); 
+		    websocket.send('{"dal.function.UID":"'+functionUID+'","dal.function.property.name":"'+property+'"}');
+		  }
+		
+		  
+		  
+    </script>
+</head>
+<body>
+    <!-- REST APIs GUI -->
+    <div class="container"> 
+        <div>
+        <h2>API calls status</h2> 
+        <p id="APIRequestInformation"></p></div>
+        
+        <div id="devices">
+        	<h2>Devices</h2>
+            <table class="table table-responsive table-bordered" id="devicesTable">
+
+            </table>
+        </div>
+        <h2>Functions</h2><input type="button" onclick="displayDevices(); return false;" value="Back"/>
+        <div id="functions">
+        	<table id="functionsTable" class="table table-responsive table-bordered">
+        	</table>
+        </div>
+        <div id="goBack"></div>
+        <div id="parameters"></div>
+    </div>
+    <div class="container">
+    	<h2>Invoke Function Operation</h2>
+   		<label for="functionUID">Function UID</label>   <input id="functionUID" type="text" name="functionUID" /><br/>
+   		<label for="operation">operation</label>   <input id="operation" type="text" name="operation" /><br/>
+   		<label for="arguments">arguments</label>   <input size="100" id="arguments" type="text" name="arguments" /><br/>
+   		<input type="button" id="invokeFunctionOperation" onclick="invokeFunctionOperation($('#functionUID').val(),$('#operation').val(),$('#arguments').val()); return false;" value="Invoke"/>
+    </div>
+    
+    <!-- Websocket Subscription GUI -->
+    <div class="container">
+    	<h2>WebSocket</h2>
+    	<input type="button" id="Connect" onclick="initWebSocket(); return false;" value="Connect"/>
+    	<label for="wsFunctionUID">Function UID</label>   <input id="wsFunctionUID" type="text" name="wsFunctionUID" /><br/>
+   		<label for="property">property</label>   <input id="property" type="text" name="property" /><br/>
+   		<!-- <label for="subscriptionString">Subscription String</label>   <input id="subscriptionString" type="text" name="subscriptionString" /> -->
+   		<input type="button" id="sendsubScriptionString" onclick="doSendSubscriptionString($('#wsFunctionUID').val(),$('#property').val()); return false;" value="Subscribe"/>
+    	<br/>
+    	Events:<br/>
+   		<textarea rows="10" cols="100" id="eventsTextArea"></textarea>
+    </div>
+    
+    
+</body>
+</html>

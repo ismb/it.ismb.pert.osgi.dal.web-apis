@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" factory="it.ismb.dal.websocket" name="WebSocketApi Component">
+   <implementation class="it.ismb.pert.dal.web.apis.websocket.DALEventWebSocket"/>
+</scr:component>
