@@ -5,7 +5,7 @@ This bundle provides REST and WebSocket access to Devices, Functions and Events 
 REST APIs are used to provide access to Device and Function services. Functions operations invoke and FunctionData editing is implemented using Java Reflection. 
 WebSocket APIs provides a publish/subscribe service built upon OSGi EventAdmin 
 
-You can test APIs with some fake devices downloading this file:
+You can test APIs with some fake devices downloading and unpacking [this zip file] (https://github.com/ivangrimaldi/it.ismb.pert.osgi.dal.web-apis/releases/download/v0.1/dal-web-apis-bin.zip).
 
 Start the application running start.sh (on linux) or start.bat (on Windows)
 
