@@ -3,7 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DAL REST and WebSocket APIs
 Bundle-SymbolicName: it.ismb.pert.osgi.dal.web-apis
 Bundle-Version: 1.0.0.qualifier
+Export-Package: it.ismb.pert.dal.web.apis,
+ it.ismb.pert.dal.web.apis.rest.application,
+ it.ismb.pert.dal.web.apis.rest.pojos,
+ it.ismb.pert.dal.web.apis.rest.resources,
+ it.ismb.pert.dal.web.apis.websocket
 Bundle-ActivationPolicy: lazy
+Service-Component: OSGI-INF/RestApiComponent.xml,OSGI-INF/WebSocketApiComponent.xml
 Import-Package: com.google.gson;version="2.2.4",
  javax.servlet;version="2.5.0",
  javax.servlet.http;version="2.5.0",
@@ -24,5 +30,3 @@ Import-Package: com.google.gson;version="2.2.4",
  org.restlet.resource,
  org.restlet.routing,
  org.restlet.util
-Service-Component: OSGI-INF/RestApiComponent.xml,
- OSGI-INF/WebSocketApiComponent.xml
