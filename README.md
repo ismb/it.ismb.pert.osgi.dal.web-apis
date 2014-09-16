@@ -16,6 +16,19 @@ point your browser to the address
 This simple GUI will provide you some simple ways to interact with the APIs.
 The code in "virtualhome/index.html" contains some examples of how to write an API javascript client.
 
+##License
+
+This project have been developed by:
+ 
+* [Ivan Grimaldi](https://github.com/ivangrimaldi)
+* Federico Rizzo
+* [Fabio Baravalle](https://github.com/Tinwor)
+
+for [Istituto Superiore Mario Boella](http://www.ismb.it/) which holds the Copyright on the original code base.
+
+The source code, unless specified otherwise in specific files, have been released under the GNU Lesser General Public License (LGPL) version 3.
+LGPL conditions can be found on the GNU website.
+
 ##Interacting with REST APIs
 
 Remember: Content-type must be set to "application/json" when a json is sent to the server 
