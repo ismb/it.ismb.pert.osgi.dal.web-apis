@@ -21,7 +21,7 @@ The code in "virtualhome/index.html" contains some examples of how to write an A
 This project have been developed by:
  
 * [Ivan Grimaldi](https://github.com/ivangrimaldi)
-* Federico Rizzo
+* [Federico Rizzo](https://github.com/rfederico)
 * [Fabio Baravalle](https://github.com/Tinwor)
 
 for [Istituto Superiore Mario Boella](http://www.ismb.it/) which holds the Copyright on the original code base.
