@@ -2,7 +2,9 @@
 
 This README file provides instructions on how to interact with the Energy@home eco-sys through JEMMA and its REST APIs (more precisely known as DAL WEB APIs - Device Abstraction Layer WEB APIs). You can use it to start developing your Smart Home applications.
 
-The DAL WEB APIs provide REST and WebSocket access to Devices, Functions and Events available in OSGi Device Abstraction Layer
+**Something not clear ? Something not working on your System ?**. You can ask for help on the JEMMA General Mailing list. Click [here](http://ismb.github.io/jemma/devteam.html) to join.
+ 
+The DAL WEB APIs provide REST and WebSocket access to Devices, Functions and Events available in OSGi Device Abstraction Layer.
 
 REST APIs are used to provide access to Device and Function services. Functions operations invoke and FunctionData editing is implemented using Java Reflection. 
 WebSocket APIs provides a publish/subscribe service built upon OSGi EventAdmin 
