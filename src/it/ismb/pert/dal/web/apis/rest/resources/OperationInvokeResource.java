@@ -5,10 +5,12 @@ import it.ismb.pert.dal.web.apis.rest.pojos.InvokeRequest;
 import it.ismb.pert.dal.web.apis.rest.pojos.InvokeResponse;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
@@ -48,7 +50,7 @@ public class OperationInvokeResource extends ServerResource {
     	ServiceReference[] functionRefs = null;
 		try {
 			
-			String filterString = "("+Function.SERVICE_UID+"="+function_uid_prop+")";
+			String filterString = "("+Function.SERVICE_UID+"="+URLDecoder.decode(function_uid_prop,"UTF-8")+")";
 			Filter filter=bc.createFilter(filterString);
 			System.out.println(filter);
 			functionRefs = (ServiceReference[]) bc.getServiceReferences(
@@ -57,6 +59,9 @@ public class OperationInvokeResource extends ServerResource {
 			
 		
 		} catch (InvalidSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

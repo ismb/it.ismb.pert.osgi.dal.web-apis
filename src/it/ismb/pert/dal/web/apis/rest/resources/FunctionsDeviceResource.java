@@ -1,5 +1,7 @@
 package it.ismb.pert.dal.web.apis.rest.resources;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,7 +39,7 @@ public class FunctionsDeviceResource extends ServerResource {
     	ServiceReference[] functionRefs = null;
 		try {
 			
-			String filterString = "("+Function.SERVICE_DEVICE_UID+"="+device_uid_prop+")";
+			String filterString = "("+Function.SERVICE_DEVICE_UID+"="+URLDecoder.decode(device_uid_prop,"UTF-8")+")";
 			Filter filter=bc.createFilter(filterString);
 			System.out.println(filter);
 			functionRefs = (ServiceReference[]) bc.getServiceReferences(
@@ -52,7 +54,7 @@ public class FunctionsDeviceResource extends ServerResource {
 			for (int i = 0; i < functionRefs.length; i++) {
 				System.out.println(functionRefs[i]);
 			}
-		} catch (InvalidSyntaxException e) {
+		} catch (InvalidSyntaxException | UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
