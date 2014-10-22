@@ -67,6 +67,7 @@ public class FunctionsDeviceResource extends ServerResource {
 			for(int j=0;j<functionRefs[i].getPropertyKeys().length;j++)
 			{
 				propMap.put(functionRefs[i].getPropertyKeys()[j], functionRefs[i].getProperty(functionRefs[i].getPropertyKeys()[j]));
+				bc.ungetService(functionRefs[i]);
 			}
 			functions.add(propMap);
 			

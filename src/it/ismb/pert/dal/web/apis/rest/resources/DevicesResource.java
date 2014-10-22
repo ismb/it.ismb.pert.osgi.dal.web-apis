@@ -60,6 +60,7 @@ public class DevicesResource extends ServerResource {
 				if(!deviceRefs[i].getPropertyKeys()[j].equals("objectClass"))
 				{
 					propMap.put(deviceRefs[i].getPropertyKeys()[j], deviceRefs[i].getProperty(deviceRefs[i].getPropertyKeys()[j]));
+					bc.ungetService(deviceRefs[i]);
 				}
 			}
 			devs.add(propMap);

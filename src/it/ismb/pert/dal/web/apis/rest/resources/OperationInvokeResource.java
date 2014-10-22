@@ -129,11 +129,10 @@ public class OperationInvokeResource extends ServerResource {
 				ex.printStackTrace();
 				response.setCode(500);
 				response.setMessage("Error invoking operation - "+ex.getClass().getName()+":"+ex.getMessage());
+			}finally{
+				//unget the service reference
+				bc.ungetService(functionRefs[0]);
 			}
-					
-
-			//unget the service reference
-			bc.ungetService(functionRefs[0]);			
 					
 		}
 
