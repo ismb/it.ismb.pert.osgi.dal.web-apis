@@ -17,6 +17,7 @@ import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.dal.DeviceException;
 import org.osgi.service.dal.Function;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Post;
@@ -119,16 +120,16 @@ public class OperationInvokeResource extends ServerResource {
 							paramValues[i]=params[i].getValue();
 						}
 					}
-					
+
 					o=meth.invoke(clazz.cast(f), paramValues);
-						response.setCode(200);
-						response.setResult(o);
+					response.setCode(200);
+					response.setResult(o);
 				}
 			}catch(Exception ex)
 			{
 				ex.printStackTrace();
 				response.setCode(500);
-				response.setMessage("Error invoking operation - "+ex.getClass().getName()+":"+ex.getMessage());
+				response.setMessage("Error invoking operation - "+ex.getCause().getClass().getName()+":"+ex.getCause().getMessage());
 			}finally{
 				//unget the service reference
 				bc.ungetService(functionRefs[0]);
@@ -161,7 +162,7 @@ public class OperationInvokeResource extends ServerResource {
 						}else if(classes[i].getName().equals(Short.class.getName()))
 						{
 							//handle Short values
-							params[i].setValue(((Double)(params[i].getValue())).shortValue());
+							params[i].setValue(Short.parseShort((String) params[i].getValue()));
 						}else if(classes[i].getName().equals(Integer.class.getName()))
 						{
 							//handle Short values
