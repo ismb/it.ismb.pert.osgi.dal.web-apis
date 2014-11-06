@@ -189,7 +189,7 @@
 		  {
 		  	//$("#eventsTextArea").append('<span style="color: red;">ERROR:</span> ' + JSON.stringify(evt));
             var s = JSON.stringify(evt);
-            addMessageToTable(s);
+            //addMessageToTable(s);
 		  	console.error(s);
 		  }
 		
@@ -199,9 +199,14 @@
 		    websocket.send('{"dal.function.UID":"'+functionUID+'","dal.function.property.name":"'+property+'"}');
 		  }
 		  function addMessageToTable(msg){
-              if($("tblEvents tr").size() > 9)
-                  $("#tblEvents tr:first-child").remove();
-              $("#tblEvents tr").last().after("<tr><td>"+ msg +"</td></tr>")
+              var c = false;
+              do {
+                  if ($("tblEvents tr").size() > parseInt($("#numbers").val()))
+                      $("#tblEvents tr:first-child").remove();
+                  else
+                      c = true;
+              }while(!c);
+              $("#tblEvents tr").last().after("<tr><td>"+ msg["PROPERTY_FUNCTION_UID"] +"</td><td>"+msg["PROPERTY_FUNCTION_PROPERTY_NAME"]+"</td><td>"+ msg["PROPERTY_FUNCTION_PROPERTY_VALUE"] +"</td></tr>")
           }
 		  
 		  
@@ -246,9 +251,15 @@
    		<input type="button" id="sendsubScriptionString" onclick="doSendSubscriptionString($('#wsFunctionUID').val(),$('#property').val()); return false;" value="Subscribe"/>
     	<br/>
     	Events:<br/>
-   		<textarea rows="10" cols="100" id="eventsTextArea"></textarea>
+   		<!--<textarea rows="10" cols="100" id="eventsTextArea"></textarea>-->
+        <input type="number" id="numbers" min="4" value="5" />
+        <br/>
         <table id="tblEvents" class="table table-bordered table-responsive">
-            <tr></tr>
+            <tr>
+                <th>Function UID</th>
+                <th>name</th>
+                <th>value</th>
+            </tr>
         </table>
     </div>
     
