@@ -10,7 +10,7 @@
     <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
     
     <script type="text/javascript">
-    	  var host="localhost";
+    	  var host = location.hostname;
     	  var port="8080";
     	  
     	  var restApisUrl="http://"+host+":"+port+"/api/";
@@ -181,13 +181,16 @@
 		  function onMessage(evt)
 		  {
 		  	//update events text area when a message have been received from websocket
-		  	 $("#eventsTextArea").val($("#eventsTextArea").val()+evt.data);
+		  	 //$("#eventsTextArea").val($("#eventsTextArea").val()+evt.data);
+            addMessageToTable(evt.data);
 		  }
 		
 		  function onError(evt)
 		  {
-		  	$("#eventsTextArea").append('<span style="color: red;">ERROR:</span> ' + JSON.stringify(evt));
-		  	console.error(JSON.stringify(evt));
+		  	//$("#eventsTextArea").append('<span style="color: red;">ERROR:</span> ' + JSON.stringify(evt));
+            var s = JSON.stringify(evt);
+            //addMessageToTable(s);
+		  	console.error(s);
 		  }
 		
 		  function doSendSubscriptionString(functionUID,property)
@@ -195,7 +198,16 @@
 		    console.log("Subscribing to: "+functionUID+" "+property); 
 		    websocket.send('{"dal.function.UID":"'+functionUID+'","dal.function.property.name":"'+property+'"}');
 		  }
-		
+		  function addMessageToTable(msg){
+              var c = false;
+              do {
+                  if ($("tblEvents tr").size() > parseInt($("#numbers").val()))
+                      $("#tblEvents tr:first-child").remove();
+                  else
+                      c = true;
+              }while(!c);
+              $("#tblEvents tr").last().after("<tr><td>"+ msg["PROPERTY_FUNCTION_UID"] +"</td><td>"+msg["PROPERTY_FUNCTION_PROPERTY_NAME"]+"</td><td>"+ msg["PROPERTY_FUNCTION_PROPERTY_VALUE"] +"</td></tr>")
+          }
 		  
 		  
     </script>
@@ -239,7 +251,16 @@
    		<input type="button" id="sendsubScriptionString" onclick="doSendSubscriptionString($('#wsFunctionUID').val(),$('#property').val()); return false;" value="Subscribe"/>
     	<br/>
     	Events:<br/>
-   		<textarea rows="10" cols="100" id="eventsTextArea"></textarea>
+   		<!--<textarea rows="10" cols="100" id="eventsTextArea"></textarea>-->
+        <input type="number" id="numbers" min="4" value="5" />
+        <br/>
+        <table id="tblEvents" class="table table-bordered table-responsive">
+            <tr>
+                <th>Function UID</th>
+                <th>name</th>
+                <th>value</th>
+            </tr>
+        </table>
     </div>
     
     
