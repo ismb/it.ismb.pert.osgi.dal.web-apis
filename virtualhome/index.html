@@ -28,6 +28,7 @@
   		    //initialize websocket
   		    initWebSocket();
   		    displayDevices();
+  		    $("#eventsNumber").bind('change',onEventsNumberChange);
   		    console.log("all loaded");  
     	  });
 		  
@@ -198,15 +199,32 @@
 		    console.log("Subscribing to: "+functionUID+" "+property); 
 		    websocket.send('{"dal.function.UID":"'+functionUID+'","dal.function.property.name":"'+property+'"}');
 		  }
+		  
+		  function onEventsNumberChange()
+		  {
+			  var eventsDisplayed=( $("#tblEvents tr").size());
+			  while( eventsDisplayed > parseInt( $("#eventsNumber").val() ))
+			  {
+				  $("#tblEvents tr:last-child").remove();
+				  eventsDisplayed=( $("#tblEvents tr").size() - 1);
+			  }
+			  
+		  }
+		  
 		  function addMessageToTable(msg){
-              var c = false;
-              do {
-                  if ($("tblEvents tr").size() > parseInt($("#numbers").val()))
-                      $("#tblEvents tr:first-child").remove();
-                  else
-                      c = true;
-              }while(!c);
-              $("#tblEvents tr").last().after("<tr><td>"+ msg["PROPERTY_FUNCTION_UID"] +"</td><td>"+msg["PROPERTY_FUNCTION_PROPERTY_NAME"]+"</td><td>"+ msg["PROPERTY_FUNCTION_PROPERTY_VALUE"] +"</td></tr>")
+           
+              console.log(msg);
+              var eventsDisplayed=( $("#tblEvents tr").size());
+              console.log(eventsDisplayed);
+              console.log(parseInt( $("#eventsNumber").val() ));
+              
+              if( eventsDisplayed  > parseInt( $("#eventsNumber").val() ) )
+              {
+            	  $("#tblEvents tr:last-child").remove();
+              }
+              
+              var evt=JSON.parse(msg);
+              $("#tblEvents tr").first().after("<tr><td>"+ evt.properties["dal.function.UID"] +"</td><td>"+evt.properties["dal.function.property.name"]+"</td><td>"+ JSON.stringify(evt.properties["dal.function.property.value"]) +"</td></tr>")
           }
 		  
 		  
@@ -244,15 +262,16 @@
     <!-- Websocket Subscription GUI -->
     <div class="container">
     	<h2>WebSocket</h2>
-    	<input type="button" id="Connect" onclick="initWebSocket(); return false;" value="Connect"/>
+    	<h3>Events Subscription</h3>
+    	
+    	<input type="button" id="Connect" onclick="initWebSocket(); return false;" value="Connect"/><br/>
     	<label for="wsFunctionUID">Function UID</label>   <input id="wsFunctionUID" type="text" name="wsFunctionUID" /><br/>
    		<label for="property">property</label>   <input id="property" type="text" name="property" /><br/>
-   		<!-- <label for="subscriptionString">Subscription String</label>   <input id="subscriptionString" type="text" name="subscriptionString" /> -->
+   		
    		<input type="button" id="sendsubScriptionString" onclick="doSendSubscriptionString($('#wsFunctionUID').val(),$('#property').val()); return false;" value="Subscribe"/>
     	<br/>
-    	Events:<br/>
-   		<!--<textarea rows="10" cols="100" id="eventsTextArea"></textarea>-->
-        <input type="number" id="numbers" min="4" value="5" />
+    	<h3>Events table</h3>
+    	# of events to be displayed: <input type="number" id="eventsNumber" min="1" value="5" /><br/>
         <br/>
         <table id="tblEvents" class="table table-bordered table-responsive">
             <tr>
