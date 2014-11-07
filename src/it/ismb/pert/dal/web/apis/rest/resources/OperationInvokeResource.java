@@ -127,7 +127,7 @@ public class OperationInvokeResource extends ServerResource {
 				}
 			}catch(Exception ex)
 			{
-				ex.printStackTrace();
+				ex.getCause().printStackTrace();
 				response.setCode(500);
 				response.setMessage("Error invoking operation - "+ex.getCause().getClass().getName()+":"+ex.getCause().getMessage());
 			}finally{
@@ -156,7 +156,7 @@ public class OperationInvokeResource extends ServerResource {
 					Constructor constructor;
 					try {
 						//treat BigDecimal
-						if(classes[i].getName().equals("java.math.BigDecimal"))
+						if(classes[i].getName().equals(BigDecimal.class.getName()))
 						{
 							params[i].setValue(new BigDecimal((Double)(params[i].getValue())));
 						}else if(classes[i].getName().equals(Short.class.getName()))
@@ -167,6 +167,9 @@ public class OperationInvokeResource extends ServerResource {
 						{
 							//handle Short values
 							params[i].setValue(((Double)(params[i].getValue())).intValue());
+						}else if(classes[i].getName().equals(Boolean.class.getName()))
+						{
+							params[i].setValue( Boolean.valueOf((String)(params[i].getValue())));
 						}else{
 							//try to invoke a constructor for the type
 							constructor = classes[i].getConstructor(params[i].getValue().getClass());
