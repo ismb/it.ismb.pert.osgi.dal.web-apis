@@ -90,6 +90,9 @@
 				    		updateStatus(-1,'invokeResponse: ' + JSON.stringify(data));
 				    	}
 				    },
+				    error: function(data){
+				    	updateStatus(-1,'invokeResponse: ' + JSON.stringify(data));
+				    },
 				    contentType: "application/json",
 				    dataType: 'json'
 				});
@@ -213,10 +216,10 @@
 		  
 		  function addMessageToTable(msg){
            
-              console.log(msg);
+              //console.log(msg);
               var eventsDisplayed=( $("#tblEvents tr").size());
-              console.log(eventsDisplayed);
-              console.log(parseInt( $("#eventsNumber").val() ));
+              //console.log(eventsDisplayed);
+              //console.log(parseInt( $("#eventsNumber").val() ));
               
               if( eventsDisplayed  > parseInt( $("#eventsNumber").val() ) )
               {

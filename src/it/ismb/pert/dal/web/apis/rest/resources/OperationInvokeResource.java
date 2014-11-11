@@ -127,9 +127,14 @@ public class OperationInvokeResource extends ServerResource {
 				}
 			}catch(Exception ex)
 			{
-				ex.getCause().printStackTrace();
+				ex.printStackTrace();
 				response.setCode(500);
-				response.setMessage("Error invoking operation - "+ex.getCause().getClass().getName()+":"+ex.getCause().getMessage());
+				if(ex.getCause()!=null)
+				{
+					response.setMessage("Error invoking operation - "+ex.getCause().getClass().getName()+":"+ex.getCause().getMessage());
+				}else{
+					response.setMessage("Error invoking operation - "+ex.getClass().getName()+":"+ex.getMessage());
+				}
 			}finally{
 				//unget the service reference
 				bc.ungetService(functionRefs[0]);
@@ -158,7 +163,7 @@ public class OperationInvokeResource extends ServerResource {
 						//treat BigDecimal
 						if(classes[i].getName().equals(BigDecimal.class.getName()))
 						{
-							params[i].setValue(new BigDecimal((Double)(params[i].getValue())));
+							params[i].setValue(new BigDecimal((Double.valueOf((String) params[i].getValue()))));
 						}else if(classes[i].getName().equals(Short.class.getName()))
 						{
 							//handle Short values
