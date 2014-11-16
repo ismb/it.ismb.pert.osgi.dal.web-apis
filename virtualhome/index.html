@@ -142,8 +142,8 @@
 		        			tBody += "<tr>";
 				            tBody += "<td>" + data[obj]["dal.function.device.UID"] +"</td>";
 			                tBody += "<td>" + data[obj]["dal.function.UID"] + "</td>";
-			                tBody += "<td>"+data[obj]["dal.function.operation.names"]+"</td>";
-			                tBody += "<td>"+data[obj]["dal.function.property.names"]+"</td>";
+			                tBody += "<td>"+(typeof(data[obj]["dal.function.operation.names"]) == "undefined" ? "" :data[obj]["dal.function.operation.names"])+"</td>";
+			                tBody += "<td>"+(typeof(data[obj]["dal.function.property.names"]) == "undefined" ? "" :data[obj]["dal.function.property.names"])+"</td>";
 			                tBody += "</tr>";
 			             }
 			    }
