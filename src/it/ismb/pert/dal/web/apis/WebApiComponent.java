@@ -36,7 +36,7 @@ public class WebApiComponent {
 			httpService.registerServlet(WEBSOCKET_PATH, new APIsWebSocketHandler(webSocketFactory), null, null);
 			httpService.registerResources("/virtualhome", "/virtualhome", null);
 		
-		} catch (ServletException | NamespaceException e) {
+		} catch (Exception e) {
 			
 			e.printStackTrace();
 		}

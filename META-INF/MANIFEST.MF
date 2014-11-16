@@ -30,3 +30,4 @@ Import-Package: com.google.gson;version="2.2.4",
  org.restlet.resource,
  org.restlet.routing,
  org.restlet.util
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

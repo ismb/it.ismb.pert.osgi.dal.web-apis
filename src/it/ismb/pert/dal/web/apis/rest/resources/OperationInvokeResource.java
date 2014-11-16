@@ -81,7 +81,7 @@ public class OperationInvokeResource extends ServerResource {
 			try {
 				invReq = gson.fromJson(entity.getText(),InvokeRequest.class);
 				operation=invReq.getOperation();
-			} catch (JsonSyntaxException | IOException e1) {
+			} catch (Exception e1) {
 				response.setCode(400);
 			    response.setMessage("Invalid request");
 			    e1.printStackTrace();
@@ -181,7 +181,7 @@ public class OperationInvokeResource extends ServerResource {
 							params[i].setValue(constructor.newInstance(params[i].getValue()));
 						}
 						
-					} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}

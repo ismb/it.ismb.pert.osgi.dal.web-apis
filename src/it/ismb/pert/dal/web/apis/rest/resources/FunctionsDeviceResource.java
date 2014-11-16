@@ -54,7 +54,7 @@ public class FunctionsDeviceResource extends ServerResource {
 			for (int i = 0; i < functionRefs.length; i++) {
 				System.out.println(functionRefs[i]);
 			}
-		} catch (InvalidSyntaxException | UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
