@@ -38,7 +38,7 @@ public class FunctionsDeviceResource extends ServerResource {
     	BundleContext bc = FrameworkUtil.getBundle(FunctionsDeviceResource.class).getBundleContext();
     	ServiceReference[] functionRefs = null;
 		try {
-			
+			System.out.println("Device uid property:"+device_uid_prop);
 			String filterString = "("+Function.SERVICE_DEVICE_UID+"="+URLDecoder.decode(device_uid_prop,"UTF-8")+")";
 			Filter filter=bc.createFilter(filterString);
 			System.out.println(filter);
