@@ -266,16 +266,16 @@ or
   ws://host:port/wsoverload
  ```
  
- on this channel, the client will receive events according to the Overload status:
+ on this channel, the client will receive events according to the Overload status in the topic:
  
  ```
- {"topic":"ah/eh/overload/NO_OVERLOAD","properties":{}}
+ ah/eh/overload/NO_OVERLOAD
  ```
  
  or
  
  ```
- {"topic":"ah/eh/overload/CONTRACTUAL_WARNING","properties":{}}
+ah/eh/overload/CONTRACTUAL_WARNING
  ```
  
  or
