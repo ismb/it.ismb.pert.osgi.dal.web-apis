@@ -257,7 +257,7 @@ or
  {"topic":"org/osgi/service/dal/FunctionEvent/PROPERTY_CHANGED","properties":{"dal.function.UID":"ZigBee:SmartPlug1:OnOff","dal.function.property.value":{"value":false,"timestamp":1410703590988},"dal.function.property.name":"data"}}
  ```
  
- ###Using WebSocket to get Overload notifications
+ ##Using WebSocket to get Overload notifications
  
  If you are running JEMMA with APIs, you can get Overload status notifications through websocket. The URI is
  
