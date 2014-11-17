@@ -16,9 +16,12 @@
     	  var restApisUrl="http://"+host+":"+port+"/api/";
     	  
     	  var webSocketUrl = "ws://"+host+":"+port+"/ws";
+    	  
+    	  var overLoadUrl = "ws://"+host+":"+port+"/wsoverload"
 
     	  
     	  var websocket;
+    	  var overloadWebsocket
     	  
     	  $(document).ready(function(){
     		//reset events textarea
@@ -166,6 +169,12 @@
 		    websocket.onclose = function(evt) { onClose(evt) };
 		    websocket.onmessage = function(evt) { onMessage(evt) };
 		    websocket.onerror = function(evt) { onError(evt) };
+		    
+		    overloadWebsocket=new WebSocket(overLoadUrl);
+		    overloadWebsocket.onopen = function(evt) { onOpen(evt) };
+		    overloadWebsocket.onclose = function(evt) { onClose(evt) };
+		    overloadWebsocket.onmessage = function(evt) { $("#OverLoad").html(evt.data) };
+		    overloadWebsocket.onerror = function(evt) { onError(evt) };
 		  }
 		
 		  function onOpen(evt)
@@ -178,7 +187,6 @@
 		  {
 		    console.log("DISCONNECTED");
 		    $("#Connect").show()
-		    
 		    
 		  }
 		
@@ -283,6 +291,8 @@
                 <th>value</th>
             </tr>
         </table>
+        <h3>Overload Status:</h3>
+        <div id="OverLoad"></div>
     </div>
     
     

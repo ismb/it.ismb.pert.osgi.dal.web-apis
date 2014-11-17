@@ -2,5 +2,7 @@
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="it.ismb.pert.dal.web.apis">
    <implementation class="it.ismb.pert.dal.web.apis.WebApiComponent"/>
    <reference bind="bindHttpService" cardinality="1..1" interface="org.osgi.service.http.HttpService" name="HttpService" policy="dynamic" unbind="unbindHttpService"/>
-   <reference bind="bindComponentFactory" cardinality="1..1" interface="org.osgi.service.component.ComponentFactory" name="ComponentFactory" policy="static" target="(component.factory=it.ismb.dal.websocket)" unbind="unbindComponentFactory"/>
+   <reference bind="bindAPIComponentFactory" cardinality="1..1" interface="org.osgi.service.component.ComponentFactory" name="APIComponentFactory" policy="static" target="(component.factory=it.ismb.dal.websocket)" unbind="unbindAPIComponentFactory"/>
+   <reference bind="bindOverloadComponentFactory" cardinality="1..1" interface="org.osgi.service.component.ComponentFactory" name="OverloadComponentFactory" policy="static" target="(component.factory=it.ismb.overload.websocket)" unbind="unbindOverloadComponentFactory"/>
 </scr:component>
+ 

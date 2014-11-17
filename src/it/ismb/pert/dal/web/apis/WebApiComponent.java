@@ -2,6 +2,7 @@ package it.ismb.pert.dal.web.apis;
 
 import it.ismb.pert.dal.web.apis.rest.application.JemmaApplication;
 import it.ismb.pert.dal.web.apis.websocket.APIsWebSocketHandler;
+import it.ismb.pert.dal.web.apis.websocket.OverLoadsWebSocketHandler;
 
 import java.util.Hashtable;
 
@@ -21,10 +22,13 @@ import org.osgi.service.http.NamespaceException;
 public class WebApiComponent {
 
 	public static final String REST_PATH="/api";
-	public static final String WEBSOCKET_PATH="/ws";
+	public static final String WEBSOCKET_API_PATH="/ws";
+	public static final String WEBSOCKET_OVERLOAD_PATH="/wsoverload";
 	
 	//the factory for WebSocket handlers, used when creating new WebSocket connections
-	private ComponentFactory webSocketFactory;
+	private ComponentFactory webSocketAPIFactory;
+	
+	private ComponentFactory webSocketOverloadFactory;
 	
 	private HttpService httpService;
 	
@@ -33,7 +37,8 @@ public class WebApiComponent {
 		try {
 		
 			httpService.registerServlet(REST_PATH, new RestApplicationServlet(), null, null);
-			httpService.registerServlet(WEBSOCKET_PATH, new APIsWebSocketHandler(webSocketFactory), null, null);
+			httpService.registerServlet(WEBSOCKET_API_PATH, new APIsWebSocketHandler(webSocketAPIFactory), null, null);
+			httpService.registerServlet(WEBSOCKET_OVERLOAD_PATH, new OverLoadsWebSocketHandler(webSocketOverloadFactory), null, null);
 			httpService.registerResources("/virtualhome", "/virtualhome", null);
 		
 		} catch (Exception e) {
@@ -51,18 +56,28 @@ public class WebApiComponent {
 	public void unbindHttpService(HttpService httpService)
 	{
 		httpService.unregister(REST_PATH);
-		httpService.unregister(WEBSOCKET_PATH);
+		httpService.unregister(WEBSOCKET_API_PATH);
 		httpService=null;
 	}
 	
-	public void bindComponentFactory(ComponentFactory componentFactory)
+	public void bindAPIComponentFactory(ComponentFactory componentFactory)
 	{
-		this.webSocketFactory=componentFactory;
+		this.webSocketAPIFactory=componentFactory;
 	}
 	
-	public void unbindComponentFactory(ComponentFactory componentFactory)
+	public void unbindAPIComponentFactory(ComponentFactory componentFactory)
 	{
-		this.webSocketFactory=null;
+		this.webSocketAPIFactory=null;
+	}
+	
+	public void bindOverloadComponentFactory(ComponentFactory componentFactory)
+	{
+		this.webSocketOverloadFactory=componentFactory;
+	}
+	
+	public void unbindOverloadComponentFactory(ComponentFactory componentFactory)
+	{
+		this.webSocketOverloadFactory=null;
 	}
 	
 }

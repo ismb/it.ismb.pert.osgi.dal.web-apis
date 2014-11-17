@@ -257,4 +257,37 @@ or
  {"topic":"org/osgi/service/dal/FunctionEvent/PROPERTY_CHANGED","properties":{"dal.function.UID":"ZigBee:SmartPlug1:OnOff","dal.function.property.value":{"value":false,"timestamp":1410703590988},"dal.function.property.name":"data"}}
  ```
  
+ ### Using WebSocket to get Overload notifications
+ 
+ If you are running JEMMA with APIs, you can get Overload status notifications through websocket. The URI is
+ 
+ 
+ ```
+  ws://host:port/wsoverload
+ ```
+ 
+ on this channel, the client will receive events according to the Overload status:
+ 
+ ```
+ {"topic":"ah/eh/overload/NO_OVERLOAD","properties":{}}
+ ```
+ 
+ or
+ 
+ ```
+ {"topic":"ah/eh/overload/CONTRACTUAL_WARNING","properties":{}}
+ ```
+ 
+ or
+ 
+ ```
+ ah/eh/overload/FIRST_WARNING
+ ```
+ 
+ or
+ 
+ ```
+ ah/eh/overload/SECOND_WARNING
+ ```
+ 
  
