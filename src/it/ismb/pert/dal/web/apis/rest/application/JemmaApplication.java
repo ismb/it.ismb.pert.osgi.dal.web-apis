@@ -24,7 +24,7 @@ public class JemmaApplication extends Application{
         // Create a router Restlet that routes each call to a
         // new instance of HelloWorldResource.
         Router router = new Router(getContext());
-
+        
         //register restlet resources
         
         router.attach("/devices", DevicesResource.class); //get devices list

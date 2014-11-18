@@ -11,6 +11,7 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.dal.Device;
+import org.restlet.data.Form;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
@@ -21,7 +22,7 @@ import com.google.gson.Gson;
  * @author Ivan Grimaldi (grimaldi@ismb.it)
  *
  */
-public class DevicesResource extends ServerResource {
+public class DevicesResource extends BaseServerResource {
 
 	@Get("json")
     public String represent() {
@@ -66,6 +67,8 @@ public class DevicesResource extends ServerResource {
 			devs.add(propMap);
 			
 		}
+		
+		this.addCustomHeaders();
 		
 		//write devices to client
 		return gson.toJson(devs);

@@ -31,7 +31,7 @@ import com.google.gson.JsonSyntaxException;
  * @author Ivan Grimaldi (grimaldi@ismb.it)
  *
  */
-public class OperationInvokeResource extends ServerResource {
+public class OperationInvokeResource extends BaseServerResource {
 
     @SuppressWarnings("unchecked")
 	@Post("json")
@@ -141,7 +141,8 @@ public class OperationInvokeResource extends ServerResource {
 			}
 					
 		}
-
+		
+		this.addCustomHeaders();
 		
         return gson.toJson(response);
     }

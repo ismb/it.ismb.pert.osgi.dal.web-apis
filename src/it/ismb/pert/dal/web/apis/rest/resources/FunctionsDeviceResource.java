@@ -23,7 +23,7 @@ import com.google.gson.Gson;
  * @author Ivan Grimaldi (grimaldi@ismb.it)
  *
  */
-public class FunctionsDeviceResource extends ServerResource {
+public class FunctionsDeviceResource extends BaseServerResource {
 
     @SuppressWarnings("unchecked")
 	@Get
@@ -72,6 +72,8 @@ public class FunctionsDeviceResource extends ServerResource {
 			functions.add(propMap);
 			
 		}
+		
+		this.addCustomHeaders();
 		
 		//write the map back to the client
 		return gson.toJson(functions);
