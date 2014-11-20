@@ -17,6 +17,7 @@ public class BaseServerResource extends ServerResource{
 		}
 		//allow request from other origins
 		responseHeaders.add(new Header("Access-Control-Allow-Origin", "*"));
+		responseHeaders.add(new Header("Access-Control-Allow-Headers", "*"));
 	}
 
 	//Method added for CORS requests support: pre-flight request use OPTION method
