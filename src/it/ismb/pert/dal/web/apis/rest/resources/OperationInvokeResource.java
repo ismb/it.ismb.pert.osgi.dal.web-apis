@@ -22,6 +22,8 @@ import org.osgi.service.dal.Function;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -32,8 +34,8 @@ import com.google.gson.JsonSyntaxException;
  *
  */
 public class OperationInvokeResource extends BaseServerResource {
-
-    @SuppressWarnings("unchecked")
+	private static final Logger LOG = LoggerFactory.getLogger(OperationInvokeResource.class);
+			
 	@Post("json")
     public String represent( Representation entity ) {
     	
@@ -53,7 +55,7 @@ public class OperationInvokeResource extends BaseServerResource {
 			
 			String filterString = "("+Function.SERVICE_UID+"="+URLDecoder.decode(function_uid_prop,"UTF-8")+")";
 			Filter filter=bc.createFilter(filterString);
-			System.out.println(filter);
+			LOG.info("Filter: {}",filter);
 			functionRefs = (ServiceReference[]) bc.getServiceReferences(
 				    Function.class.getName(),
 				    filterString);
@@ -68,13 +70,13 @@ public class OperationInvokeResource extends BaseServerResource {
 		}
 		
 		if (null == functionRefs || functionRefs.length==0) {
-			System.out.println("No services ref");
+			LOG.info("No service reference found with function UID: {}",function_uid_prop);
 			response.setCode(404);
 		    response.setMessage("Function not found");
 		}else{
-			System.out.println("service references...");
+			LOG.info("Found {} service references",functionRefs.length);
 			for (int i = 0; i < functionRefs.length; i++) {
-				System.out.println(functionRefs[i]);
+				LOG.info("Service reference: {}",functionRefs[i]);
 			}
 			InvokeRequest invReq = null;
 			String operation=null;
@@ -82,6 +84,7 @@ public class OperationInvokeResource extends BaseServerResource {
 				invReq = gson.fromJson(entity.getText(),InvokeRequest.class);
 				operation=invReq.getOperation();
 			} catch (Exception e1) {
+				LOG.error("Invalid request body");
 				response.setCode(400);
 			    response.setMessage("Invalid request");
 			    e1.printStackTrace();
@@ -129,6 +132,7 @@ public class OperationInvokeResource extends BaseServerResource {
 			{
 				ex.printStackTrace();
 				response.setCode(500);
+				LOG.error("Error invoking operation: {}",ex);
 				if(ex.getCause()!=null)
 				{
 					response.setMessage("Error invoking operation - "+ex.getCause().getClass().getName()+":"+ex.getCause().getMessage());
@@ -183,13 +187,12 @@ public class OperationInvokeResource extends BaseServerResource {
 						}
 						
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						LOG.error("Error converting params: {}",e);
 					}
 					
 				}
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+				LOG.error("Class not found: {}",e);
 			}
 		}
 		return classes;

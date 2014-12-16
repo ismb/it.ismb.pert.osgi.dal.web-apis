@@ -1,6 +1,5 @@
 package it.ismb.pert.dal.web.apis.rest.resources;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,9 +10,9 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.dal.Device;
-import org.restlet.data.Form;
 import org.restlet.resource.Get;
-import org.restlet.resource.ServerResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
@@ -23,7 +22,8 @@ import com.google.gson.Gson;
  *
  */
 public class DevicesResource extends BaseServerResource {
-
+	private static final Logger LOG=LoggerFactory.getLogger(DevicesResource.class);
+			
 	@Get("json")
     public String represent() {
     	
@@ -38,16 +38,15 @@ public class DevicesResource extends BaseServerResource {
 				    null);
 			
 			if (null == deviceRefs) {
-				System.out.println("No devices ref");
+				LOG.error("No device reference found");
 			    return null; // no such services
 			}
-			System.out.println("Device references...");
+			LOG.info("Found {} device references", deviceRefs.length);
 			for (int i = 0; i < deviceRefs.length; i++) {
-				System.out.println(deviceRefs[i]);
+				LOG.info("Service reference: {}",deviceRefs[i]);
 			}
 		} catch (InvalidSyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Invalid filter syntax: {}",e);
 		}
 			
 		//Fill a map of devices parameters to be returned to the client

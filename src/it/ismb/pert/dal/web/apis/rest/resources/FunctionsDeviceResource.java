@@ -15,6 +15,8 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.service.dal.Function;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
@@ -24,8 +26,8 @@ import com.google.gson.Gson;
  *
  */
 public class FunctionsDeviceResource extends BaseServerResource {
+	private static final Logger LOG = LoggerFactory.getLogger(FunctionsDeviceResource.class);
 
-    @SuppressWarnings("unchecked")
 	@Get
     public String represent() {
     	
@@ -38,25 +40,24 @@ public class FunctionsDeviceResource extends BaseServerResource {
     	BundleContext bc = FrameworkUtil.getBundle(FunctionsDeviceResource.class).getBundleContext();
     	ServiceReference[] functionRefs = null;
 		try {
-			System.out.println("Device uid property:"+device_uid_prop);
+			LOG.debug("Device uid property: {}",device_uid_prop);
 			String filterString = "("+Function.SERVICE_DEVICE_UID+"="+URLDecoder.decode(device_uid_prop,"UTF-8")+")";
 			Filter filter=bc.createFilter(filterString);
-			System.out.println(filter);
+			LOG.info("Filter: {}",filter);
 			functionRefs = (ServiceReference[]) bc.getServiceReferences(
 				    Function.class.getName(),
 				    filterString);
 			
 			if (null == functionRefs) {
-				System.out.println("No services ref");
+				LOG.error("No service function reference with deviceUID: {}",device_uid_prop);
 			    return null; // no such services
 			}
-			System.out.println("service references...");
+			LOG.info("Found {} service references",functionRefs.length);
 			for (int i = 0; i < functionRefs.length; i++) {
-				System.out.println(functionRefs[i]);
+				LOG.info("Service Reference: {}",functionRefs[i]);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Erro getting service references: {}",e);
 		}
     	
     	//prepare a map of found functions
