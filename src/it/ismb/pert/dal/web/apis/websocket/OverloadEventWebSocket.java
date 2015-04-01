@@ -36,18 +36,15 @@ public class OverloadEventWebSocket implements EventHandler,WebSocket.OnTextMess
 	}
 	
 	
-	@Override
 	public void onClose(int closeCode, String message) {
 		//unregister the eventhandler
 		unregisterEventHandlerService();
 	}
 
-	@Override
 	public void onOpen(Connection connection) {
 		this.connection=connection;
 	}
 
-	@Override
 	public void onMessage(String message) {
 		//nothing to do
 		
@@ -69,7 +66,6 @@ public class OverloadEventWebSocket implements EventHandler,WebSocket.OnTextMess
 		registration=this.context.getBundleContext().registerService(EventHandler.class.getName(), this, properties);
 	}
 
-	@Override
 	public void handleEvent(Event arg0) {
 		//an event mathcing the filter specified by the client have been received		
 		try {
