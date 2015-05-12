@@ -109,6 +109,7 @@
 			  	var tHeader = "<tr>";
 			    
 		        tHeader += "<th>dal.device.UID</th>";
+		        tHeader += "<th>dal.device.name</th>";
 		        tHeader += "<th>dal.device.driver</th>";
 		        tHeader += "<th>dal.device.status</th>";
 			    
@@ -119,6 +120,7 @@
 	        		if(data.hasOwnProperty(obj)) {
 		            	tBody += "<tr>";
 	                	tBody += "<td>" + data[obj]["dal.device.UID"] +"</td>";
+	                	tBody += "<td>" + data[obj]["dal.device.name"] +"</td>";
 	                	tBody += "<td>" + data[obj]["dal.device.driver"] +"</td>";
 	                	tBody += "<td>" + data[obj]["dal.device.status"] +"</td>";
 	                	tBody += '<td> <a href="javascript:displayFunctions(\''+data[obj]["dal.device.UID"]+'\')">Display Functions</a></td>'; 
