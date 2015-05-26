@@ -54,17 +54,22 @@ GET http://localhost/api/devices
 ```
 Example Response:
 ```
-[
-    {
-        "dal.device.status": 2,
-        "dal.device.UID": "ZigBee:test123",
-        "dal.device.driver": "ZigBee",
-        "service.id": 28,
-        "objectClass": [
-            "org.osgi.service.dal.Device"
-        ]
-    }
-]
+{
+	"code": 200,
+	"result":
+	[
+	    {
+	        "dal.device.status": 2,
+	        "dal.device.UID": "ZigBee:test123",
+	        "dal.device.name":"Smart Plug 1",
+	        "dal.device.driver": "ZigBee",
+	        "service.id": 28,
+	        "objectClass": [
+	            "org.osgi.service.dal.Device"
+	        ]
+	    }
+	]
+}
 ```
 
 
@@ -86,23 +91,26 @@ GET http://localhost/api/devices/ZigBee:test123/functions
 ```
 Example Response:
 ```
-[
-    {
-        "CLASS": "ismb.pert.jemma.dummydevice.DummyFunction",
-        "dal.function.device.UID": "ZigBee:test123",
-        "service.id": 27,
-        "dal.function.UID": "ZigBee:test123:testButton",
-        "objectClass": [
-            "org.osgi.service.dal.Function"
-        ],
-        "dal.function.operation.names": [
-            "getData",
-            "reverse",
-            "setFalse",
-            "setTrue"
-        ]
-    }
-]
+{
+	"code":200,
+	"result":[
+	    {
+	        "CLASS": "ismb.pert.jemma.dummydevice.DummyFunction",
+	        "dal.function.device.UID": "ZigBee:test123",
+	        "service.id": 27,
+	        "dal.function.UID": "ZigBee:test123:testButton",
+	        "objectClass": [
+	            "org.osgi.service.dal.Function"
+	        ],
+	        "dal.function.operation.names": [
+	            "getData",
+	            "reverse",
+	            "setFalse",
+	            "setTrue"
+	        ]
+	    }
+	]
+}
 ```
 
 ###Invoking operations

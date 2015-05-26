@@ -43,9 +43,15 @@
 		  			function(data)
 				  	{
 				  		$("#functions").hide();
-				  		updateDevicesTable(data);
+				  		if(data.code==200){
+				  			updateDevicesTable(data.result);
+				  			updateStatus(1,"ok");
+				  		}else{
+				  			updateStatus(-1,data.message)
+				  		}
+				  			
 				  		$("#devices").show();
-				  		updateStatus(1,"ok");
+				  		
 				  	}
 		  	).error(function()
 		  		{
@@ -61,9 +67,13 @@
 		  			function(data)
 				  	{
 				  		$("#devices").hide();
-				  		updateFunctionsTable(data);
+				  		if(data.code==200){
+				  			updateFunctionsTable(data.result);
+				  			updateStatus(1,"ok");
+				  		}else{
+				  			updateStatus(-1,data.message)
+				  		}
 				  		$("#functions").show();
-				  		updateStatus(1,"ok");
 				  	}
 		  			
 		  	).error(function()

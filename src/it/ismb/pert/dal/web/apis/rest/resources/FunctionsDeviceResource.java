@@ -1,20 +1,20 @@
 package it.ismb.pert.dal.web.apis.rest.resources;
 
-import java.io.UnsupportedEncodingException;
+import it.ismb.pert.dal.web.apis.rest.pojos.InvokeResponse;
+
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.dal.Function;
 import org.restlet.resource.Get;
-import org.restlet.resource.ServerResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +32,10 @@ public class FunctionsDeviceResource extends BaseServerResource {
     public String represent() {
     	
     	Gson gson = new Gson();
-   
+    	
+    	InvokeResponse resp=new InvokeResponse();
+    	resp.setCode(200);
+    	
     	//Get device uid parameter
     	String device_uid_prop=(String) getRequest().getAttributes().get("device_uid");
     	
@@ -50,7 +53,8 @@ public class FunctionsDeviceResource extends BaseServerResource {
 			
 			if (null == functionRefs) {
 				LOG.error("No service function reference with deviceUID: {}",device_uid_prop);
-			    return null; // no such services
+			    resp.setResult(new Vector());
+				return gson.toJson(resp); // no such services
 			}
 			LOG.info("Found {} service references",functionRefs.length);
 			for (int i = 0; i < functionRefs.length; i++) {
@@ -58,6 +62,9 @@ public class FunctionsDeviceResource extends BaseServerResource {
 			}
 		} catch (Exception e) {
 			LOG.error("Erro getting service references: {}",e);
+			resp.setCode(500);
+			resp.setMessage("Error getting function references: "+e.getMessage());
+			return gson.toJson(resp);
 		}
     	
     	//prepare a map of found functions
@@ -76,7 +83,9 @@ public class FunctionsDeviceResource extends BaseServerResource {
 		
 		this.addCustomHeaders();
 		
+		resp.setResult(functions);
+		
 		//write the map back to the client
-		return gson.toJson(functions);
+		return gson.toJson(resp);
     }
 }
