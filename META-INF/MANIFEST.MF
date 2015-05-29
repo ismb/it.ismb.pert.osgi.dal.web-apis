@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: DAL REST and WebSocket APIs
 Bundle-SymbolicName: it.ismb.pert.osgi.dal.web-apis
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 2.0.0
 Export-Package: it.ismb.pert.dal.web.apis,
  it.ismb.pert.dal.web.apis.rest.application,
  it.ismb.pert.dal.web.apis.rest.pojos,

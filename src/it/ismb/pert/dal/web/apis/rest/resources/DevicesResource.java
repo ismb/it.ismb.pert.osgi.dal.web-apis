@@ -1,9 +1,12 @@
 package it.ismb.pert.dal.web.apis.rest.resources;
 
+import it.ismb.pert.dal.web.apis.rest.pojos.InvokeResponse;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
@@ -29,6 +32,10 @@ public class DevicesResource extends BaseServerResource {
     	
     	Gson gson = new Gson();
     	
+    	InvokeResponse resp=new InvokeResponse();
+    	//initially set 200, overwrite in case of exceptions
+    	resp.setCode(200);
+    	
     	//Get all devices services
     	BundleContext bc = FrameworkUtil.getBundle(DevicesResource.class).getBundleContext();
     	ServiceReference[] deviceRefs = null;
@@ -38,8 +45,9 @@ public class DevicesResource extends BaseServerResource {
 				    null);
 			
 			if (null == deviceRefs) {
-				LOG.error("No device reference found");
-			    return null; // no such services
+				LOG.info("No device reference found");
+				resp.setResult(new Vector());
+			    return gson.toJson(resp); // no such services
 			}
 			LOG.info("Found {} device references", deviceRefs.length);
 			for (int i = 0; i < deviceRefs.length; i++) {
@@ -47,6 +55,10 @@ public class DevicesResource extends BaseServerResource {
 			}
 		} catch (InvalidSyntaxException e) {
 			LOG.error("Invalid filter syntax: {}",e);
+			resp.setCode(500);
+			resp.setMessage("Invalid filter syntax");
+			return gson.toJson(resp);
+			
 		}
 			
 		//Fill a map of devices parameters to be returned to the client
@@ -69,7 +81,9 @@ public class DevicesResource extends BaseServerResource {
 		
 		this.addCustomHeaders();
 		
+		resp.setResult(devs);
+		
 		//write devices to client
-		return gson.toJson(devs);
+		return gson.toJson(resp);
     }
 }

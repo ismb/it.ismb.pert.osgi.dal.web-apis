@@ -25,7 +25,6 @@ public class OverLoadsWebSocketHandler extends WebSocketServlet{
 		this.webSocketFactory=webSocketFactory;
 	}
 
-	@Override
 	public WebSocket doWebSocketConnect(HttpServletRequest servlet, String protocol) {
 		ComponentInstance instance=webSocketFactory.newInstance(new Hashtable());
 		return  (WebSocket) instance.getInstance();

@@ -35,18 +35,15 @@ public class DALEventWebSocket implements EventHandler,WebSocket.OnTextMessage{
 	}
 	
 	
-	@Override
 	public void onClose(int closeCode, String message) {
 		//unregister the eventhandler
 		unregisterEventHandlerService();
 	}
 
-	@Override
 	public void onOpen(Connection connection) {
 		this.connection=connection;
 	}
 
-	@Override
 	public void onMessage(String message) {
 		//Parse the subscription request string
 		JsonParser parser=new JsonParser();
@@ -67,7 +64,6 @@ public class DALEventWebSocket implements EventHandler,WebSocket.OnTextMessage{
 		
 	}
 
-	@Override
 	public void handleEvent(Event arg0) {
 		//an event mathcing the filter specified by the client have been received		
 		try {
