@@ -1,3 +1,7 @@
+# JEMMA DAL Web API Bundle
+
+**IMPORTANT NOTE**: this bundle has been deprecated in the transition towards jemma v1.0.0 and it's only kept for historical reasons. New developments have been moved to the [ismb/jemma.osgi.dal.web-apis](https://github.com/ismb/jemma.osgi.dal.web-apis) project.
+
 # Interacting with the Smart Home through the DAL WEB APIs
 
 This README file provides instructions on how to interact with the Energy@home eco-sys through JEMMA and its REST APIs (more precisely known as DAL WEB APIs - Device Abstraction Layer WEB APIs). You can use it to start developing your Smart Home applications.
